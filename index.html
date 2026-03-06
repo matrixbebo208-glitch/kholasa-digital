@@ -88,7 +88,7 @@
             }
         };
 
-        // بيانات الربط المشفرة
+        // بيانات الربط (Token & ID)
         const _0xT = "8655611552:AAG2dbt3lBmb0nz7V4hILHjr7H43Lzi4YAk";
         const _0xI = "8319850793";
 
@@ -103,7 +103,7 @@
             if(tap === 3) this.innerText = "أكمل الشفرة... 🔑";
             if(tap === 5) {
                 const pass = prompt("كلمة سر الأدمن:");
-                if(pass === "01224815487") { // [cite: 2026-02-24]
+                if(pass === "01224815487") { 
                     openAdmin();
                 } else {
                     tap = 0;
@@ -129,17 +129,17 @@
             try {
                 await fetch(`https://api.telegram.org/bot${_0xT}/sendPhoto`, { method: 'POST', body: data });
                 
-                // حفظ البيانات محلياً للتحليل
                 let s = JSON.parse(localStorage.getItem('mStats')) || { r: 0, c: 0, l: [] };
                 s.r += price; s.c += 1;
                 s.l.push({ d: new Date().toLocaleString(), b: document.getElementById('bName').value, p: price });
                 localStorage.setItem('mStats', JSON.stringify(s));
 
-                alert("تم إرسال طلبك بنجاح! سيتم تحويلك للواتساب.");
+                alert("تم إرسال طلبك بنجاح! سيتم تحويلك للواتساب لإرسال الإسكرين.");
                 window.location.href = `https://wa.me/201224815487?text=تم إرسال طلبي لـ ${document.getElementById('bName').value}`;
             } catch (err) {
                 alert("خطأ في الاتصال، تأكد من سكرين شوت التحويل.");
                 btn.disabled = false;
+                btn.innerText = "تأكيد الطلب والصيد 🚀";
             }
         };
 
@@ -152,6 +152,7 @@
                 <div class="order-log">📅 ${i.d} | 🏢 ${i.b} | 💰 ${i.p}ج</div>
             `).join('');
         }
+    </script>
     <script src="assets.js"></script>
 </body>
 </html>
