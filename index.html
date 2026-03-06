@@ -4,29 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الخلاصة ديجيتال | El Kholasa 🌊</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root { --deep-sea: #001C30; --wave: #176B87; --fish-gold: #FFB000; --water: #DAFFFB; --white: #ffffff; }
-        body { background: var(--deep-sea); color: var(--white); font-family: 'Segoe UI', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; user-select: none; }
-        
-        /* واجهة متقدمة - خلفية متحركة */
-        .ocean { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(180deg, #001C30 0%, #176B87 100%); }
-        .container { width: 95%; max-width: 500px; margin: 20px auto; position: relative; }
-        
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        
-        h1 { color: var(--fish-gold); text-align: center; font-size: 2.2rem; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255,176,0,0.3); }
-        .version { font-size: 0.7rem; color: rgba(255,255,255,0.3); text-align: center; cursor: pointer; padding: 10px; }
-
-        input, textarea, select { width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 15px; border: none; background: rgba(255,255,255,0.9); color: #333; font-weight: 600; box-sizing: border-box; }
-        label { display: block; margin: 10px 5px; font-size: 0.9rem; font-weight: bold; color: var(--fish-gold); }
-
-        .btn-main { background: var(--fish-gold); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--fish-gold); }
-
-        /* لوحة الأدمن المتقدمة */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; padding: 30px; box-sizing: border-box; overflow-y: auto; }
-        .stats-box { background: #111; border: 1px solid var(--fish-gold); padding: 20px; border-radius: 20px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; }
-        .order-log { font-size: 0.8rem; border-bottom: 1px solid #222; padding: 10px 0; color: #ccc; }
+        /* إضافة ستايل بسيط للتنبيهات والرسائل البرمجية */
+        .urgent-status-msg {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4d4d;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none; /* مخفي افتراضياً */
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            text-align: center;
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -34,8 +26,10 @@
     <div class="ocean"></div>
 
     <div class="container">
-        <h1>الخلاصة ديجيتال 🐟</h1>
-        <div class="version" id="vNumber">إصدار 3.0.1 - MATRIX AI</div>
+        <header style="text-align: center; margin-bottom: 20px;">
+            <h1 style="margin-bottom: 0;">الخلاصة ديجيتال 🐟</h1>
+            <div class="version" id="vNumber">إصدار 3.0.1 - MATRIX AI</div>
+        </header>
 
         <div class="glass-card">
             <form id="orderForm">
@@ -47,112 +41,47 @@
                 <input type="text" id="bName" placeholder="اسم البراند / المشروع" required>
                 <textarea id="bDesc" rows="3" placeholder="وصف التصميم (الألوان والمجال)..." required></textarea>
 
-                <label>خطة التنفيذ:</label>
+                <label>خطة التنفيذ (التوقيت):</label>
                 <select id="speed" onchange="calcPrice()">
                     <option value="50">عادي (24 ساعة) - 50 ج</option>
-                    <option value="85">مستعجل (ساعتين) - 85 ج</option>
+                    <option value="85" id="urgentOpt">مستعجل (ساعتين) - 85 ج</option>
                 </select>
+                <div id="statusMsg" class="urgent-status-msg">⚠️ نعتذر، خدمة المستعجل مشغولة حالياً (اضغط "عادي").</div>
 
                 <label>سكرين شوت التحويل (01224815487):</label>
                 <input type="file" id="uFile" accept="image/*" required>
 
-                <div id="totalPrice" style="text-align:center; font-weight:bold; font-size:1.3rem; margin:15px; color:var(--fish-gold)">المطلوب: 50 جنيه</div>
+                <div id="totalPrice" class="total-price" style="text-align:center; font-weight:bold; font-size:1.3rem; margin:15px; color:#FFB000;">
+                    المطلوب: 50 جنيه
+                </div>
                 
                 <button type="submit" class="btn-main" id="subBtn">تأكيد الطلب والصيد 🚀</button>
             </form>
         </div>
     </div>
 
-    <div id="admin-panel">
-        <h2 style="color:var(--fish-gold)">لوحة تحكم القبطان MATRIX ⚓</h2>
-        <div class="stats-box">
-            <div><p>الأرباح</p><h2 id="rev" style="color:var(--fish-gold); margin:0;">0</h2></div>
-            <div><p>الطلبات</p><h2 id="cnt" style="margin:0;">0</h2></div>
+    <div id="admin-panel" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; padding: 30px; box-sizing: border-box; overflow-y: auto;">
+        <h2 style="color:#FFB000; text-align: center;">لوحة تحكم القبطان MATRIX ⚓</h2>
+        
+        <div class="stats-box" style="background: #111; border: 1px solid #FFB000; padding: 20px; border-radius: 20px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+            <div>
+                <p style="margin: 0; color: #ccc;">إجمالي الأرباح</p>
+                <h2 id="rev" style="color:#FFB000; margin:5px 0;">0</h2>
+            </div>
+            <div>
+                <p style="margin: 0; color: #ccc;">عدد الطلبات</p>
+                <h2 id="cnt" style="margin:5px 0;">0</h2>
+            </div>
         </div>
-        <h3>تحليل البيانات:</h3>
-        <div id="log"></div>
-        <br>
-        <button onclick="location.reload()" style="background:red; color:white; padding:15px; border:none; width:100%; border-radius:15px; cursor:pointer;">خروج وتشفير</button>
+
+        <h3 style="border-bottom: 1px solid #333; padding-bottom: 10px;">سجل العمليات:</h3>
+        <div id="log" style="color: #eee; font-size: 0.9rem;"></div>
+        
+        <br><br>
+        <button id="closeAdmin" style="background:red; color:white; padding:15px; border:none; width:100%; border-radius:15px; cursor:pointer; font-weight: bold;">خروج وتشفير البيانات</button>
     </div>
 
-    <script>
-        // سكيورتي: حماية ضد F12 و Network
-        (function() {
-            const block = function() { setInterval(function() { debugger; }, 50); };
-            try { block(); } catch (err) {}
-        })();
-        
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
-        };
-
-        // بيانات الربط (Token & ID)
-        const _0xT = "8655611552:AAG2dbt3lBmb0nz7V4hILHjr7H43Lzi4YAk";
-        const _0xI = "8319850793";
-
-        function calcPrice() {
-            document.getElementById('totalPrice').innerText = `المطلوب: ${document.getElementById('speed').value} جنيه`;
-        }
-
-        // شفرة الأدمن (3 ضغطات + 2 ضغطة)
-        let tap = 0;
-        document.getElementById('vNumber').onclick = function() {
-            tap++;
-            if(tap === 3) this.innerText = "أكمل الشفرة... 🔑";
-            if(tap === 5) {
-                const pass = prompt("كلمة سر الأدمن:");
-                if(pass === "01224815487") { 
-                    openAdmin();
-                } else {
-                    tap = 0;
-                    this.innerText = "إصدار 3.0.1 - MATRIX AI";
-                }
-            }
-        };
-
-        document.getElementById('orderForm').onsubmit = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('subBtn');
-            btn.innerText = "جاري التأمين والإرسال...";
-            btn.disabled = true;
-
-            const price = parseInt(document.getElementById('speed').value);
-            const caption = `🚨 طلب جديد بانتظارك! %0A👤 العميل: ${document.getElementById('uName').value}%0A📞 واتساب: ${document.getElementById('uPhone').value}%0A🏢 المشروع: ${document.getElementById('bName').value}%0A💰 المبلغ: ${price}ج%0A🕒 النوع: ${document.getElementById('speed').options[document.getElementById('speed').selectedIndex].text}`;
-
-            const data = new FormData();
-            data.append('chat_id', _0xI);
-            data.append('photo', document.getElementById('uFile').files[0]);
-            data.append('caption', caption);
-
-            try {
-                await fetch(`https://api.telegram.org/bot${_0xT}/sendPhoto`, { method: 'POST', body: data });
-                
-                let s = JSON.parse(localStorage.getItem('mStats')) || { r: 0, c: 0, l: [] };
-                s.r += price; s.c += 1;
-                s.l.push({ d: new Date().toLocaleString(), b: document.getElementById('bName').value, p: price });
-                localStorage.setItem('mStats', JSON.stringify(s));
-
-                alert("تم إرسال طلبك بنجاح! سيتم تحويلك للواتساب لإرسال الإسكرين.");
-                window.location.href = `https://wa.me/201224815487?text=تم إرسال طلبي لـ ${document.getElementById('bName').value}`;
-            } catch (err) {
-                alert("خطأ في الاتصال، تأكد من سكرين شوت التحويل.");
-                btn.disabled = false;
-                btn.innerText = "تأكيد الطلب والصيد 🚀";
-            }
-        };
-
-        function openAdmin() {
-            const s = JSON.parse(localStorage.getItem('mStats')) || { r: 0, c: 0, l: [] };
-            document.getElementById('admin-panel').style.display = 'block';
-            document.getElementById('rev').innerText = s.r;
-            document.getElementById('cnt').innerText = s.c;
-            document.getElementById('log').innerHTML = s.l.reverse().map(i => `
-                <div class="order-log">📅 ${i.d} | 🏢 ${i.b} | 💰 ${i.p}ج</div>
-            `).join('');
-        }
-    </script>
+    <script src="script.js"></script>
     <script src="assets.js"></script>
 </body>
 </html>
