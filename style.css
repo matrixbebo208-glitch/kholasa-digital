@@ -1,0 +1,171 @@
+/* 1. إعدادات الألوان والمتغيرات */
+:root {
+    --deep-sea: #001C30;
+    --wave-blue: #176B87;
+    --fish-gold: #FFB000;
+    --foam-white: #DAFFFB;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+}
+
+/* 2. تنسيق الصفحة الرئيسي */
+body {
+    background: var(--deep-sea);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* خلفية المحيط المتحركة */
+.ocean {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #001C30 0%, #176B87 100%);
+}
+
+/* 3. حاوية المحتوى (الكرت الزجاجي) */
+.container {
+    width: 90%;
+    max-width: 480px;
+    padding: 20px;
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. العناوين والنصوص */
+h1 {
+    color: var(--fish-gold);
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    text-shadow: 0 0 15px rgba(255, 176, 0, 0.4);
+}
+
+.version {
+    font-size: 0.75rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.version:hover {
+    color: var(--fish-gold);
+}
+
+/* 5. تنسيق المدخلات (Inputs) */
+label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--fish-gold);
+    font-weight: bold;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.95);
+    color: #111;
+    font-size: 1rem;
+    font-weight: 500;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--fish-gold);
+    box-shadow: 0 0 10px rgba(255, 176, 0, 0.3);
+}
+
+/* 6. الأزرار (Buttons) */
+.btn-main {
+    background: var(--fish-gold);
+    color: #000;
+    border: none;
+    padding: 16px;
+    width: 100%;
+    border-radius: 15px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.btn-main:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 176, 0, 0.5);
+}
+
+.btn-main:active {
+    transform: translateY(0);
+}
+
+/* 7. لوحة الأدمن (Hidden Panel) */
+#admin-panel {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    z-index: 99999;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+.stats-box div {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #333;
+}
+
+.order-log {
+    background: #111;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-right: 4px solid var(--fish-gold);
+    font-size: 0.85rem;
+}
+
+/* 8. رسالة التنبيه (Urgent Message) */
+.urgent-status-msg {
+    background: rgba(255, 77, 77, 0.15);
+    color: #ff4d4d;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 15px;
+    border: 1px dashed #ff4d4d;
+}
+
+/* 9. تحسين العرض على الموبايل */
+@media (max-width: 400px) {
+    .glass-card { padding: 20px; }
+    h1 { font-size: 1.6rem; }
+}
